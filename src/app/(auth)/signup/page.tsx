@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface SignUpPageProps {}
 
@@ -23,8 +25,29 @@ const SignUpPage: FC<SignUpPageProps> = ({}) => {
     resolver: zodResolver(formSignupSchema),
   });
 
-  const onSubmit = (val: z.infer<typeof formSignupSchema>) => {
-    console.log(val);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const onSubmit = async (val: z.infer<typeof formSignupSchema>) => {
+    try {
+      await fetch("/api/user", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(val),
+      });
+
+      toast({
+        title: "Success",
+        description: "Create account success",
+      });
+
+      router.push("/signin");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Please try again",
+      });
+    }
   };
   return (
     <div>

@@ -15,6 +15,9 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signIn } from "next-auth/react"; // bawaan next js
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface SignInPageProps {}
 
@@ -23,8 +26,25 @@ const SignInPage: FC<SignInPageProps> = ({}) => {
     resolver: zodResolver(formSigninSchema),
   });
 
-  const onSubmit = (val: z.infer<typeof formSigninSchema>) => {
-    console.log(val);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const onSubmit = async (val: z.infer<typeof formSigninSchema>) => {
+    const authenticated = await signIn("credentials", {
+      ...val,
+      redirect: false,
+    });
+
+    if (authenticated?.error) {
+      toast({
+        title: "Error",
+        description: "Email or Password is wrong",
+      });
+
+      return;
+    }
+
+    router.push("/");
   };
   return (
     <div>
