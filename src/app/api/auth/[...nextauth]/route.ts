@@ -1,9 +1,8 @@
 import { comparePassword } from "@/lib/utils";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-import NextAuth from "next-auth/next";
-import prisma from "../../../../lib/prisma";
+import NextAuth from "next-auth";
+import prisma from "../../../../../lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -15,7 +14,7 @@ export const authOptions: NextAuthOptions = {
           label: "Email",
           type: "text",
         },
-        password: { label: "Sassword", type: "password" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         const user = await prisma.user.findFirst({
