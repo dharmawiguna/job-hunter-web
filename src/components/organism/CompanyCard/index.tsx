@@ -12,11 +12,12 @@ const CompanyCard: FC<CompanyCardProps> = ({
   description,
   image,
   name,
+  id,
 }) => {
   const router = useRouter();
   return (
     <div
-      onClick={() => router.push("/detail/company/1")}
+      onClick={() => router.push(`/detail/company/${id}`)}
       className="border border-border p-6 cursor-pointer"
     >
       <div className="flex flex-row justify-between items-start">
