@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
-import { categoryJobType, jobType, optionType } from "@/types";
+import { categoryJobType, companyType, jobType, optionType } from "@/types";
 import { supabasePublicUrl } from "./supabase";
 
 export function cn(...inputs: ClassValue[]) {
@@ -87,15 +87,59 @@ export const parsingJobs = async (
   return [];
 };
 
-export const parsingCategoriesToOptions = (
+export const parsingCompanies = async (
   data: any,
   isLoading: boolean,
   error: any
 ) => {
   if (!isLoading && !error && data) {
+    return await Promise.all(
+      data.map(async (item: any) => {
+        let imageName = item.CompanyOverview[0]?.image;
+        let imageUrl;
+
+        if (imageName) {
+          imageUrl = await supabasePublicUrl(imageName, "company");
+        } else {
+          imageUrl = "/images/company.png";
+        }
+
+        const companyDetail = item.CompanyOverview[0];
+
+        const company: companyType = {
+          id: item.id,
+          name: companyDetail?.name,
+          image: imageUrl,
+          dateFounded: companyDetail?.dateFounded,
+          description: companyDetail?.description,
+          employee: companyDetail?.employee,
+          industry: companyDetail?.industry,
+          location: companyDetail?.location,
+          techStack: companyDetail?.techStack,
+          website: companyDetail?.website,
+          sosmed: item.CompanySocialMedia[0],
+          teams: item?.CompanyTeam,
+          totalJobs: item._count.Job,
+        };
+
+        return company;
+      })
+    );
+  }
+
+  return [];
+};
+
+export const parsingCategoriesToOptions = (
+  data: any,
+  isLoading: boolean,
+  error: any,
+  isIndustry?: boolean
+) => {
+  if (!isLoading && !error && data) {
     return data.map((item: any) => {
       return {
-        id: item.id,
+        id: isIndustry ? item.name : item.id,
         label: item.name,
       } as optionType;
     }) as optionType[];

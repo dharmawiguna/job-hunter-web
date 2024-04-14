@@ -23,12 +23,37 @@ export type filterFormType = {
   items: optionType[];
 };
 
+export type companyTeamType = {
+  id: string;
+  name: string;
+  position: string;
+  instagram: string;
+  linkedin: string;
+};
+
+export type companySocmedType = {
+  id: string;
+  instagram: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  youtube: string;
+};
+
 export type companyType = {
+  id: string;
   image: string;
   totalJobs: number;
   name: string;
   description: string;
-  categories: string;
+  website: string;
+  location: string;
+  industry: string;
+  employee: string;
+  dateFounded: Date;
+  techStack: String[];
+  sosmed: companySocmedType;
+  teams: companyTeamType;
 };
 
 export type categoryJobType = {
