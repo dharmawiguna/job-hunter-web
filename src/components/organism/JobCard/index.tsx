@@ -11,7 +11,7 @@ interface JobCardProps extends jobType {}
 
 const JobCard: FC<JobCardProps> = ({
   applicants,
-  categories,
+  skills,
   desc,
   image,
   jobType,
@@ -38,7 +38,7 @@ const JobCard: FC<JobCardProps> = ({
           <div className="h-5 inline-flex gap-2 items-center">
             <Badge variant={"secondary"}>{jobType}</Badge>
             <Separator orientation="vertical" />
-            {categories.map((item: string, i: number) => (
+            {skills.map((item: string, i: number) => (
               <Badge key={i}>{item}</Badge>
             ))}
           </div>

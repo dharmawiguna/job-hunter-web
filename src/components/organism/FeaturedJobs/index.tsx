@@ -10,8 +10,6 @@ interface FeaturedJobsProps {}
 const FeaturedJobs: FC<FeaturedJobsProps> = ({}) => {
   const { jobs, isLoading, error } = useFeaturedJobs();
 
-  console.log("jobs", jobs);
-
   // const jobs = useMemo(
   //   () => parsingJobs(data, isLoading, error),
   //   [data, isLoading, error]

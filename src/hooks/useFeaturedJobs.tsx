@@ -6,8 +6,6 @@ import useSWR from "swr";
 const useFeaturedJobs = () => {
   const { data, isLoading, error } = useSWR("/api/jobs/featured", fetcher);
 
-  console.log("data", data);
-
   const [jobs, setJobs] = useState<jobType[]>([]);
 
   const parseJobs = useCallback(async () => {
